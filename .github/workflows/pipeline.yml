@@ -8,13 +8,13 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  # avoid_redundancy:
-  #   runs-on: ubuntu-20.04
-  #   steps:
-  #     - name: Cancel Previous Redudant Builds
-  #       uses: styfle/cancel-workflow-action
-  #       with:
-  #         access_token: ${{ github.token }}
+  avoid_redundancy:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: styfle/cancel-workflow-action
+        name: Cancel Previous Redudant Builds
+        with:
+          access_token: ${{ github.token }}
 
   lint:
     runs-on: ubuntu-20.04
@@ -45,8 +45,8 @@ jobs:
         run: npm run build
       - uses: actions/upload-artifact@v4
         with:
-          name: next
-          path: next
+          name: .next
+          path: .next
 
   test:
     needs: [lint, build]
@@ -62,7 +62,7 @@ jobs:
         run: npm ci
       - uses: actions/download-artifact@v4
         with:
-          name: next
-          path: next
+          name: .next
+          path: .next
       - name: Run Tests
         run: npm run test
